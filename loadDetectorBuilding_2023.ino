@@ -5,7 +5,7 @@
 #define lowerThreshold 1301//concentrationthan this flshes low color equal or higher (and less than upperthresh) is mid color
 #define upperThreshold 4001//equal or higher cocnetnartion is high color
 #define voltReader A0
-#define fixedRes 1000 
+#define fixedRes 1000 //at 500g, thing was abt 2000 ohms
 #define Vin 5
 float val=0;
 float volts=0;
