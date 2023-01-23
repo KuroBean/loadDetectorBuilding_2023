@@ -11,6 +11,7 @@ float val=0;
 float volts=0;
 float varResistance=0;
 float concentration=0;
+int secCount=0;
 void setup() {
   // put your setup code here, to run once:
   pinMode(red,OUTPUT);
@@ -21,11 +22,22 @@ void setup() {
 }
 //low: 900ppm, med: 2700,high: 4500 
 void loop() {
+  val=analogRead(voltReader);
+  volts=val*5.0/1023.0;
+
+  //put on weight RIGHT AS UPDATE HAPPENS
+  if(volts>1.35){
+    secCount++;
+    Serial.print("seconds since nonzero reading: ");
+    Serial.println(secCount);
+  }else{
+    secCount=0;
+  }
+  
   // put your main code here, to run repeatedly:
   Serial.print("voltage: ");
   //Serial.println((analogRead(voltReader))*0.342/1023.0);
-  val=analogRead(voltReader);
-  volts=val*5.0/1023.0;
+  
   Serial.println(volts);
   
   //code for calculating resistance of solution, to make sure fixed resistor is about equal to it
@@ -33,10 +45,13 @@ void loop() {
   Serial.print("resistance of fsr: ");
   Serial.println(varResistance);
 
+  //weight conversion
   concentration=pow(volts,10)*(5.86*0.001);
   Serial.print("concentration (ppm): ");
   Serial.println(concentration);
   lightUp(lowerThreshold,upperThreshold,green,red,blue );
+
+  Serial.println();
   delay(1000);
   
 }
