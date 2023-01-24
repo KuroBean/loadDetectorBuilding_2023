@@ -7,6 +7,7 @@
 #define voltReader A0
 #define fixedRes 1000 //at 500g, thing was abt 2000 ohms
 #define Vin 5
+#define voltThresholdForTimeCount 0.2 //1.35 for 10kohm
 float val=0;
 float volts=0;
 float varResistance=0;
@@ -26,7 +27,7 @@ void loop() {
   volts=val*5.0/1023.0;
 
   //put on weight RIGHT AS UPDATE HAPPENS
-  if(volts>1.35){
+  if(volts>voltThresholdForTimeCount){
     secCount++;
     Serial.print("seconds since nonzero reading: ");
     Serial.println(secCount);
