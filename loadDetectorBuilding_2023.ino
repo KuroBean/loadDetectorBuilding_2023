@@ -2,16 +2,16 @@
 #define blue 7
 #define red 4
 #define green 2
-#define lowerThreshold 1301//concentrationthan this flshes low color equal or higher (and less than upperthresh) is mid color
-#define upperThreshold 4001//equal or higher cocnetnartion is high color
+#define lowerThreshold 41//mass lower than this flashes low color, equal or higher (and less than upperthresh) is mid color
+#define upperThreshold 201//equal or higher cocnetnartion is high color
 #define voltReader A0
-#define fixedRes 1000 //at 500g, thing was abt 2000 ohms
+#define fixedRes 2220 //at 500g, fsr was abt 2000 ohms
 #define Vin 5
-#define voltThresholdForTimeCount 0.2 //1.35 for 10kohm
+#define voltThresholdForTimeCount 0.3 
 float val=0;
 float volts=0;
 float varResistance=0;
-float concentration=0;
+float mass=0;
 int secCount=0;
 void setup() {
   // put your setup code here, to run once:
@@ -41,40 +41,43 @@ void loop() {
   
   Serial.println(volts);
   
+  /**
   //code for calculating resistance of solution, to make sure fixed resistor is about equal to it
   varResistance=fixedRes*(Vin-volts)/volts;
   Serial.print("resistance of fsr: ");
   Serial.println(varResistance);
+  */
 
   //weight conversion
-  concentration=pow(volts,10)*(5.86*0.001);
-  Serial.print("concentration (ppm): ");
-  Serial.println(concentration);
-  lightUp(lowerThreshold,upperThreshold,green,red,blue );
+  mass=69.4*pow(volts,2)+43.9*volts+29.4;
+
+  Serial.print("mass (g): ");
+  Serial.println(mass);
+  lightUp(lowerThreshold,upperThreshold,red,green,blue );
 
   Serial.println();
   delay(1000);
   
 }
 
-void lightUp(int lowThresh,int highThresh,int lowColor, int midColor,int highColor){
- if(concentration==0){
-   digitalWrite(lowColor,LOW);
-   digitalWrite(midColor,LOW);
-   digitalWrite(highColor,LOW);
+void lightUp(int lowThresh,int highThresh,int colorRed, int colorGreen,int colorBlue){
+ if(mass==0){
+   digitalWrite(colorRed,LOW);
+   digitalWrite(colorGreen,LOW);
+   digitalWrite(colorBlue,LOW);
  }
- else if(concentration<lowThresh){
-      digitalWrite(lowColor,HIGH);
-      digitalWrite(midColor,LOW);
-      digitalWrite(highColor,LOW);
-  }else if(concentration>=lowThresh&&concentration<highThresh){
-      digitalWrite(lowColor,LOW);
-      digitalWrite(midColor,HIGH);
-      digitalWrite(highColor,LOW);
+ else if(mass<lowThresh){
+      digitalWrite(colorRed,HIGH);
+      digitalWrite(colorGreen,LOW);
+      digitalWrite(colorBlue,LOW);
+  }else if(mass>=lowThresh&&mass<highThresh){
+      digitalWrite(colorRed,LOW);
+      digitalWrite(colorGreen,HIGH);
+      digitalWrite(colorBlue,LOW);
   }else{
-      digitalWrite(lowColor,LOW);
-      digitalWrite(midColor,LOW);
-      digitalWrite(highColor,HIGH);
+      digitalWrite(colorRed,LOW);
+      digitalWrite(colorGreen,LOW);
+      digitalWrite(colorBlue,HIGH);
    }
  }
 
