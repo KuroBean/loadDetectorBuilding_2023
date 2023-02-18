@@ -49,7 +49,7 @@ void loop() {
   */
 
   //weight conversion
-  mass=69.4*pow(volts,2)+43.9*volts+29.4;
+  mass=239.982*pow(1.62165,volts)-239.982;
 
   Serial.print("mass (g): ");
   Serial.println(mass);
@@ -67,13 +67,13 @@ void lightUp(int lowThresh,int highThresh,int colorRed, int colorGreen,int color
    digitalWrite(colorBlue,LOW);
  }
  else if(mass<lowThresh){
-      digitalWrite(colorRed,HIGH);
-      digitalWrite(colorGreen,LOW);
-      digitalWrite(colorBlue,LOW);
-  }else if(mass>=lowThresh&&mass<highThresh){
       digitalWrite(colorRed,LOW);
       digitalWrite(colorGreen,HIGH);
       digitalWrite(colorBlue,LOW);
+  }else if(mass>=lowThresh&&mass<highThresh){
+      digitalWrite(colorRed,HIGH);
+      digitalWrite(colorGreen,HIGH);
+      digitalWrite(colorBlue,HIGH);
   }else{
       digitalWrite(colorRed,LOW);
       digitalWrite(colorGreen,LOW);
